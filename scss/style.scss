@@ -1,0 +1,317 @@
+
+// Colors
+$primary-color: #4a2c2a;
+$secondary-color: #d4a574;
+$background-color: #f9f5f0;
+$text-color: #333;
+
+// Typography
+$font-family-base: 'Arial', sans-serif;
+$font-family-headings: 'Georgia', serif;
+
+// Breakpoints
+$breakpoint-sm: 576px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 992px;
+$breakpoint-xl: 1200px;
+
+// Custom properties (CSS variables)
+:root {
+  --primary-color: #{$primary-color};
+  --secondary-color: #{$secondary-color};
+  --background-color: #{$background-color};
+  --text-color: #{$text-color};
+}
+
+@function strip-unit($value) {
+    @return $value / ($value * 0 + 1);
+  }
+  
+  @function rem($pxValue) {
+    @return #{strip-unit($pxValue) / 16}rem;
+  }
+
+  @mixin flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  @mixin responsive($breakpoint) {
+    @if $breakpoint == sm {
+      @media (min-width: $breakpoint-sm) { @content; }
+    } @else if $breakpoint == md {
+      @media (min-width: $breakpoint-md) { @content; }
+    } @else if $breakpoint == lg {
+      @media (min-width: $breakpoint-lg) { @content; }
+    } @else if $breakpoint == xl {
+      @media (min-width: $breakpoint-xl) { @content; }
+    }
+  }
+  @mixin text-gradient($start-color, $end-color) {
+    background: linear-gradient(to right, $start-color, $end-color);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+  }
+
+  %button-base {
+    display: inline-block;
+    padding: 0.5em 1em;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: $font-family-base;
+    line-height: 1.6;
+    color: var(--text-color);
+    background-color: var(--background-color);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: $font-family-headings;
+    margin-bottom: 0.5em;
+  }
+  
+  h1 {
+    font-size: rem(36px);
+  }
+  
+  h2 {
+    font-size: rem(28px);
+  }
+  
+  h3 {
+    font-size: rem(24px);
+  }
+  
+  p {
+    margin-bottom: 1em;
+  }
+
+
+  .btn {
+    @extend %button-base;
+  
+    &-primary {
+      background-color: var(--primary-color);
+      color: white;
+  
+      &:hover {
+        background-color: darken($primary-color, 10%);
+      }
+    }
+  
+    &-secondary {
+      background-color: var(--secondary-color);
+      color: $text-color;
+  
+      &:hover {
+        background-color: darken($secondary-color, 10%);
+      }
+    }
+  }
+
+  .card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  
+    &-title {
+      font-size: rem(20px);
+      margin-bottom: 0.5rem;
+    }
+  
+    &-content {
+      color: $text-color;
+    }
+  }
+
+  .nav {
+    @include flex-center;
+    justify-content: center;
+    padding: 1rem;
+    position: relative; 
+  
+    .logo-wrapper {
+      position: absolute;
+      left: 1rem;
+      display: flex;
+      align-items: center;
+  
+      .logo-text {
+        margin-left: 0.5rem; 
+      }
+    }
+  
+    &-links {
+      display: flex;
+      list-style-type: none;
+  
+      li {
+        margin-left: 1rem;
+  
+        a {
+          color: var(--text-color);
+          text-decoration: none;
+          font-weight: bold;
+          transition: transform 0.3s ease, color 0.3s ease;
+  
+          &:hover,
+          &.active {
+            color: var(--primary-color);
+            transform: scale(1.1); // Adjust scale to avoid being too large
+          }
+        }
+      }
+    }
+  }
+
+  // scss/components/_logo.scss
+
+.logo-wrapper {
+  display: flex;
+  align-items: center;
+  
+  .logo {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+  }
+  
+  .logo-text {
+    font-family: $font-family-headings;
+    font-size: rem(24px);
+    font-weight: bold;
+    color: $primary-color;
+    
+    // Add a subtle text shadow for depth
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    display: none;
+    // Use a mixin for a gradient text effect
+    @include text-gradient($primary-color, $secondary-color);
+    @include responsive(lg) {
+      display: flex !important;
+    }
+  }
+}
+
+
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    padding: 2rem;
+
+    @include responsive(sm) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  
+    @include responsive(lg) {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+  
+.footer-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  
+    @include responsive(md) {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      text-align: left;
+    }
+  }
+  
+  
+  .footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  
+  .header {
+    background-color: rgb(239, 216, 187);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .footer {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 2rem;
+  
+    .social-links {
+      display: flex;
+      list-style-type: none;
+  
+      li {
+        margin-left: 1rem;
+  
+        a {
+          color: white;
+          text-decoration: none;
+  
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+      }
+    }
+  }
+
+  .hero {
+    background-image: url('../Assets/hero-image.webp');
+    background-size: cover;
+    background-position: center;
+    height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+  
+    &-content {
+      background-color: rgba(0, 0, 0, 0.6);
+      padding: 2rem;
+      border-radius: 8px;
+  
+      h1  {
+        font-size: rem(48px);
+        margin-bottom: 1rem;
+      }
+  
+      p {
+        font-size: rem(24px);
+        margin-bottom: 2rem;
+      }
+    }
+  }
+  
+  .feature-item {
+    @extend .card;
+    text-align: center;
+  }
+
+  
